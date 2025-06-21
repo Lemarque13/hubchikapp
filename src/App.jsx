@@ -31,32 +31,47 @@ function App() {
   };
 
   return (
-    <div className="p-4 space-y-6">
-      <h1 className="text-2xl font-bold text-[#2c924d]">🗳️ Голосование</h1>
-
-      {votingData.map((vote, qIdx) => (
-        <div key={qIdx} className="bg-white shadow rounded-xl p-4 border">
-          <h2 className="text-lg font-semibold mb-3 text-[#ec6839]">{vote.question}</h2>
-          <div className="flex flex-col gap-2">
-            {vote.options.map((opt, oIdx) => (
-              <button
-                key={oIdx}
-                onClick={() => handleVote(qIdx, opt)}
-                className={`px-4 py-2 rounded border text-sm transition font-medium ${
-                  votes[qIdx] === opt
-                    ? 'bg-[#2c924d] text-white border-[#2c924d]'
-                    : 'border-gray-300 text-gray-700 hover:bg-gray-100'
-                }`}
-              >
-                {opt}
-              </button>
-            ))}
-          </div>
+    <div className="pb-24">
+      {navTab === "Ты — БОСС" && (
+        <div className="p-4 space-y-6">
+          <h1 className="text-2xl font-bold text-[#2c924d]">🗳️ Ты — БОСС</h1>
+          {votingData.map((vote, qIdx) => (
+            <div key={qIdx} className="bg-white shadow rounded-xl p-4 border">
+              <h2 className="text-lg font-semibold mb-3 text-[#ec6839]">{vote.question}</h2>
+              <div className="flex flex-col gap-2">
+                {vote.options.map((opt, oIdx) => (
+                  <button
+                    key={oIdx}
+                    onClick={() => handleVote(qIdx, opt)}
+                    className={`px-4 py-2 rounded border text-sm transition font-medium ${
+                      votes[qIdx] === opt
+                        ? 'bg-[#2c924d] text-white border-[#2c924d]'
+                        : 'border-gray-300 text-gray-700 hover:bg-gray-100'
+                    }`}
+                  >
+                    {opt}
+                  </button>
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
-      ))}
+      )}
+
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t flex justify-around py-2">
+        {["Главная", "Избранное", "Корзина", "Ты — БОСС"].map((tab) => (
+          <button
+            key={tab}
+            onClick={() => setNavTab(tab)}
+            className={`text-xs font-medium ${navTab === tab ? 'text-[#ec6839]' : 'text-gray-500'}`}
+          >
+            {tab}
+          </button>
+        ))}
+      </div>
 
       {toastMessage && (
-        <div className="fixed bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 bg-[#2c924d] text-white rounded-xl shadow">
+        <div className="fixed bottom-14 left-1/2 -translate-x-1/2 px-4 py-2 bg-[#2c924d] text-white rounded-xl shadow">
           {toastMessage}
         </div>
       )}
