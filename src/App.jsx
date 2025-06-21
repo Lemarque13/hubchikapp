@@ -1,8 +1,5 @@
-
-
 import { useState } from 'react';
 
-// 🔰 Использовать в App
 function App() {
   const [toastMessage, setToastMessage] = useState("");
   const [banners, setBanners] = useState([
@@ -14,19 +11,56 @@ function App() {
   const [cart, setCart] = useState({});
   const [navTab, setNavTab] = useState("Главная");
   const [paymentMethod, setPaymentMethod] = useState("Click");
+  const [votes, setVotes] = useState({});
 
-  const votingData = [...];
-  const merchItems = [...];
-  const showToast = (msg) => { ... };
-  const addToCart = (id) => { ... };
-  const removeFromCart = (id) => { ... };
-  const cartItems = merchItems.filter((item) => cart[item.id]);
-  const totalPrice = cartItems.reduce((acc, item) => acc + cart[item.id] * parseInt(item.price), 0);
+  const votingData = [
+    {
+      question: "Какое блюдо добавить в меню?",
+      options: ["Кимчи лаваш", "Сырный баскет", "Острые крылья"]
+    },
+    {
+      question: "Что напечатать на стаканах?",
+      options: ["#hubchikpower", "Питайся как босс", "Бери больше"]
+    }
+  ];
 
-  const handleOrderSubmit = async () => { ... };
+  const handleVote = (qIdx, option) => {
+    setVotes((prev) => ({ ...prev, [qIdx]: option }));
+    setToastMessage("Ваш голос учтён 🙌");
+    setTimeout(() => setToastMessage(""), 2500);
+  };
 
   return (
-    <div>{/* Реализация UI, Корзина и т.д. */}</div>
+    <div className="p-4 space-y-6">
+      <h1 className="text-2xl font-bold text-[#2c924d]">🗳️ Голосование</h1>
+
+      {votingData.map((vote, qIdx) => (
+        <div key={qIdx} className="bg-white shadow rounded-xl p-4 border">
+          <h2 className="text-lg font-semibold mb-3 text-[#ec6839]">{vote.question}</h2>
+          <div className="flex flex-col gap-2">
+            {vote.options.map((opt, oIdx) => (
+              <button
+                key={oIdx}
+                onClick={() => handleVote(qIdx, opt)}
+                className={`px-4 py-2 rounded border text-sm transition font-medium ${
+                  votes[qIdx] === opt
+                    ? 'bg-[#2c924d] text-white border-[#2c924d]'
+                    : 'border-gray-300 text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                {opt}
+              </button>
+            ))}
+          </div>
+        </div>
+      ))}
+
+      {toastMessage && (
+        <div className="fixed bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 bg-[#2c924d] text-white rounded-xl shadow">
+          {toastMessage}
+        </div>
+      )}
+    </div>
   );
 }
 
